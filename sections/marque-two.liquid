@@ -1,0 +1,190 @@
+{%- style -%}
+  .marquee-section-{{ section.id }} {
+    width: 100%;
+    overflow: hidden;
+    background-color: {{ section.settings.bg_color }};
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px 0;
+    white-space: nowrap;
+    display: flex;
+    user-select: none;
+  }
+
+  .marquee-track-{{ section.id }} {
+    display: flex;
+    gap: 30px;
+    animation: marquee-scroll-{{ section.id }} {{ section.settings.speed }}s linear infinite;
+    flex-shrink: 0;
+    align-items: center;
+    will-change: transform;
+  }
+
+  .marquee-item-{{ section.id }} {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: {{ section.settings.font_size_desktop }}px;
+    font-weight: 800;
+    font-family: Arial, sans-serif; /* Web-safe font for uniform mobile rendering */
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* Fixed Text Stroke Engine for Mobile */
+  .marquee-text-content-{{ section.id }} {
+    color: {{ section.settings.bg_color }};
+    text-shadow: 
+      -1.5px -1.5px 0 {{ section.settings.text_outline_color }},
+       1.5px -1.5px 0 {{ section.settings.text_outline_color }},
+      -1.5px  1.5px 0 {{ section.settings.text_outline_color }},
+       1.5px  1.5px 0 {{ section.settings.text_outline_color }};
+  }
+
+  .marquee-emoji-{{ section.id }} {
+    font-size: {{ section.settings.font_size_desktop | minus: 4 }}px;
+    text-shadow: none !important;
+  }
+
+  @keyframes marquee-scroll-{{ section.id }} {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-50%); }
+  }
+
+  @media screen and (max-width: 749px) {
+    .marquee-track-{{ section.id }} {
+      gap: 15px;
+    }
+
+    .marquee-item-{{ section.id }} {
+      font-size: {{ section.settings.font_size_mobile }}px;
+      gap: 8px;
+    }
+
+    .marquee-text-content-{{ section.id }} {
+      text-shadow: 
+        -1px -1px 0 {{ section.settings.text_outline_color }},
+         1px -1px 0 {{ section.settings.text_outline_color }},
+        -1px  1px 0 {{ section.settings.text_outline_color }},
+         1px  1px 0 {{ section.settings.text_outline_color }};
+    }
+
+    .marquee-emoji-{{ section.id }} {
+      font-size: {{ section.settings.font_size_mobile | minus: 2 }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="marquee-section-{{ section.id }}" aria-hidden="true">
+  {%- for i in (1..2) -%}
+    <div class="marquee-track-{{ section.id }}">
+      {%- for block in section.blocks -%}
+        <div class="marquee-item-{{ section.id }}" {{ block.shopify_attributes }}>
+          <span class="marquee-text-content-{{ section.id }}">{{ block.settings.text }}</span>
+          <span class="marquee-emoji-{{ section.id }}">🎉</span>
+        </div>
+      {%- endfor -%}
+    </div>
+  {%- endfor -%}
+</div>
+
+{% schema %}
+{
+  "name": "Marquee Announcement",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_outline_color",
+      "label": "Text Outline Color",
+      "default": "#FB8500"
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "min": 5,
+      "max": 60,
+      "step": 1,
+      "unit": "s",
+      "label": "Animation Speed",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "font_size_desktop",
+      "min": 18,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Desktop Font Size",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "font_size_mobile",
+      "min": 14,
+      "max": 36,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile Font Size",
+      "default": 22
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 16
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text_block",
+      "name": "Text Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "FAST DELIVERY 🚀 QUALITY GRANTED ⭐ DELIVERED WHAT WE SHOW 😊 24/7 CUSTOMER SERVICE"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Marquee Announcement",
+      "blocks": [
+        {
+          "type": "text_block",
+          "settings": {
+            "text": "DECOR WITH BIRTHDAY BOX"
+          }
+        },
+        {
+          "type": "text_block",
+          "settings": {
+            "text": "DECOR WITH BIRTHDAY BOX"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

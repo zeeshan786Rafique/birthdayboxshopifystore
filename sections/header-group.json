@@ -1,0 +1,133 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "t:sections.header.name",
+  "type": "header",
+  "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "blocks": {
+        "announcement-bar-0": {
+          "type": "announcement",
+          "settings": {
+            "text": "MAKE THEIR BIRTHDAY EXTRA SPECIAL",
+            "text_alignment": "center",
+            "color_scheme": "background-1",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "announcement-bar-0"
+      ],
+      "settings": {}
+    },
+    "header": {
+      "type": "header",
+      "custom_css": [],
+      "settings": {
+        "logo_position": "middle-left",
+        "menu": "main-menu",
+        "menu_type_desktop": "dropdown",
+        "sticky_header_type": "on-scroll-up",
+        "show_line_separator": false,
+        "color_scheme": "background-1",
+        "enable_country_selector": false,
+        "enable_language_selector": false,
+        "mobile_logo_position": "center",
+        "margin_bottom": 0,
+        "padding_top": 8,
+        "padding_bottom": 8
+      }
+    },
+    "custom_hero_section_CWPkbL": {
+      "type": "custom-hero-section",
+      "blocks": {
+        "right_slider_image_bdfQNt": {
+          "type": "right_slider_image",
+          "settings": {
+            "image": "shopify://shop_images/8461af5a-0e26-4b84-899b-f59886b94a21.jpg"
+          }
+        },
+        "right_slider_image_mxjrzF": {
+          "type": "right_slider_image",
+          "settings": {
+            "image": "shopify://shop_images/45491694-a2a4-484f-be12-43c9a86b7175.jpg"
+          }
+        },
+        "right_slider_image_HLcKKF": {
+          "type": "right_slider_image",
+          "settings": {
+            "image": "shopify://shop_images/new_desing-18_1.png"
+          }
+        },
+        "right_slider_image_QMhGMq": {
+          "type": "right_slider_image",
+          "settings": {
+            "image": "shopify://shop_images/5fa6962a-612c-4200-8245-ccaeed795ab3.jpg"
+          }
+        },
+        "left_slider_image_fdYcnk": {
+          "type": "left_slider_image",
+          "settings": {
+            "image": "shopify://shop_images/7db59377-010f-49a1-a128-8c9a3c3d365f.jpg"
+          }
+        },
+        "left_slider_image_4agBkL": {
+          "type": "left_slider_image",
+          "settings": {
+            "image": "shopify://shop_images/2785716c-3292-4b5f-a8ca-7777f9db728e_1.jpg"
+          }
+        },
+        "left_slider_image_VmrTci": {
+          "type": "left_slider_image",
+          "settings": {
+            "image": "shopify://shop_images/bfacbea5-472a-4089-8ddb-5e4387543da2.jpg"
+          }
+        },
+        "left_slider_image_8EETPB": {
+          "type": "left_slider_image",
+          "settings": {
+            "image": "shopify://shop_images/2f2ea697-8446-48e6-be07-5255cdbfb199.jpg"
+          }
+        },
+        "left_slider_image_rVU9TC": {
+          "type": "left_slider_image",
+          "settings": {
+            "image": "shopify://shop_images/1451d187-8081-4596-8fab-cf2cbe024d8a.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "right_slider_image_bdfQNt",
+        "right_slider_image_mxjrzF",
+        "right_slider_image_HLcKKF",
+        "right_slider_image_QMhGMq",
+        "left_slider_image_fdYcnk",
+        "left_slider_image_4agBkL",
+        "left_slider_image_VmrTci",
+        "left_slider_image_8EETPB",
+        "left_slider_image_rVU9TC"
+      ],
+      "name": "Birthday Box Custom Hero",
+      "settings": {
+        "heading": "Birthday Box",
+        "subheading": "Get everything in one box no need to visit shops to shops",
+        "button_text": "Explore Box",
+        "button_url": ""
+      }
+    }
+  },
+  "order": [
+    "announcement-bar",
+    "header",
+    "custom_hero_section_CWPkbL"
+  ]
+}

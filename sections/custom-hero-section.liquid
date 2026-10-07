@@ -1,0 +1,652 @@
+{% comment %}
+  Updated Custom Hero Section for Birthday Box
+  - Dynamic Schema Variable binding
+  - Marquee Auto-Scroll Fix & Smooth Observer
+  - HIDE ON ALL PAGES EXCEPT HOME PAGE (ADDED CONDITION)
+{% endcomment %}
+
+{%- if request.page_type == 'index' -%}
+
+<div class="bb-hero-wrapper">
+  <div class="bb-hero-container">
+    <!-- ================= PART 1: LEFT SIDE ================= -->
+    <div class="bb-hero-part1">
+      <div class="bb-gold-card">
+        <!-- Dynamic Text Block -->
+        <div class="bb-text-content">
+          <h1 class="bb-main-title">
+            {% if section.settings.heading != blank %}
+              {{ section.settings.heading }}
+            {% else %}
+              <span class="gold-letter">B</span>irthday B<span class="gold-letter">o</span>x
+            {% endif %}
+          </h1>
+          <p class="bb-sub-text">
+            {{ section.settings.subheading | default: 'Get everything in one box no need to visit shops to shops' }}
+          </p>
+          <a href="{{ section.settings.button_url | default: '/collections/all' }}" class="bb-action-btn">
+            {{ section.settings.button_text | default: 'Explore Box' }}
+          </a>
+        </div>
+
+        <!-- 3D Opening/Closing Gift Box -->
+        <div class="bb-box-stage">
+          <div class="bb-gift-box">
+            <div class="bb-pop-items">
+              <span class="bb-item item-balloon">🎈</span>
+              <span class="bb-item item-popper">🎉</span>
+              <span class="bb-item item-hat">🥳</span>
+              <span class="bb-item item-sparkle">✨</span>
+              <span class="bb-item item-candle">🕯️</span>
+            </div>
+            <div class="bb-box-lid">
+              <div class="bb-lid-top"></div>
+              <div class="bb-lid-bow">🎀</div>
+            </div>
+            <div class="bb-box-body">
+              <div class="bb-box-ribbon-v"></div>
+              <div class="bb-box-ribbon-h"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= PART 2: RIGHT SIDE (SLIDERS & DYNAMIC CIRCLES) ================= -->
+    <div class="bb-hero-part2">
+      <!-- Top Water Drop Circle (Synced with Left Up-Slider) -->
+      <div class="bb-water-drop drop-top">
+        <img id="bb-top-circle-img" src="" alt="Dynamic Active Card" style="display:none;">
+        <div class="bb-placeholder-circle" id="bb-top-circle-ph"></div>
+      </div>
+
+      <!-- Dual Vertical Marquee Sliders -->
+      <div class="bb-sliders-grid">
+        <!-- Column 1: Carousel Up (Left Slider) -->
+        <div class="bb-slider-col col-up" id="bb-left-slider">
+          <div class="bb-track">
+            {% assign left_blocks = section.blocks | where: 'type', 'left_slider_image' %}
+            {% assign left_count = 0 %}
+
+            {% for block in left_blocks %}
+              {% if block.settings.image != blank %}
+                {% assign left_count = left_count | plus: 1 %}
+                <div class="bb-card-item" data-src="{{ block.settings.image | image_url: width: 800 }}">
+                  <img
+                    src="{{ block.settings.image | image_url: width: 800 }}"
+                    alt="{{ block.settings.image.alt | escape }}"
+                    width="800"
+                    height="800"
+                    loading="eager"
+                  >
+                </div>
+              {% endif %}
+            {% endfor %}
+
+            {% comment %} Sirf tab duplicate karein jab 2 ya us se zyada images hon smooth scroll ke liye {% endcomment %}
+            {% if left_count > 1 %}
+              {% for block in left_blocks %}
+                {% if block.settings.image != blank %}
+                  <div class="bb-card-item" data-src="{{ block.settings.image | image_url: width: 800 }}">
+                    <img
+                      src="{{ block.settings.image | image_url: width: 800 }}"
+                      alt="{{ block.settings.image.alt | escape }}"
+                      width="800"
+                      height="800"
+                      loading="eager"
+                    >
+                  </div>
+                {% endif %}
+              {% endfor %}
+            {% endif %}
+
+            {% if left_count == 0 %}
+              <div class="bb-card-item bb-placeholder-item"><span>Add Left Slider Images</span></div>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Column 2: Carousel Down (Right Slider) -->
+        <div class="bb-slider-col col-down" id="bb-right-slider">
+          <div class="bb-track">
+            {% assign right_blocks = section.blocks | where: 'type', 'right_slider_image' %}
+            {% assign right_count = 0 %}
+
+            {% for block in right_blocks %}
+              {% if block.settings.image != blank %}
+                {% assign right_count = right_count | plus: 1 %}
+                <div class="bb-card-item" data-src="{{ block.settings.image | image_url: width: 800 }}">
+                  <img
+                    src="{{ block.settings.image | image_url: width: 800 }}"
+                    alt="{{ block.settings.image.alt | escape }}"
+                    width="800"
+                    height="800"
+                    loading="eager"
+                  >
+                </div>
+              {% endif %}
+            {% endfor %}
+
+            {% comment %} Sirf tab duplicate karein jab 2 ya us se zyada images hon smooth scroll ke liye {% endcomment %}
+            {% if right_count > 1 %}
+              {% for block in right_blocks %}
+                {% if block.settings.image != blank %}
+                  <div class="bb-card-item" data-src="{{ block.settings.image | image_url: width: 800 }}">
+                    <img
+                      src="{{ block.settings.image | image_url: width: 800 }}"
+                      alt="{{ block.settings.image.alt | escape }}"
+                      width="800"
+                      height="800"
+                      loading="eager"
+                    >
+                  </div>
+                {% endif %}
+              {% endfor %}
+            {% endif %}
+
+            {% if right_count == 0 %}
+              <div class="bb-card-item bb-placeholder-item"><span>Add Right Slider Images</span></div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Water Drop Circle (Synced with Right Down-Slider) -->
+      <div class="bb-water-drop drop-bottom">
+        <img id="bb-bottom-circle-img" src="" alt="Dynamic Active Card" style="display:none;">
+        <div class="bb-placeholder-circle" id="bb-bottom-circle-ph"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+    /* Base Setup */
+    .bb-hero-wrapper {
+      width: 100%;
+      padding: 40px 20px;
+      background-color: #faf9f6;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+
+    .bb-hero-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    /* Left Side CSS */
+    .bb-gold-card {
+      position: relative;
+      background: linear-gradient(135deg, #ffffff 0%, #fffdf8 40%, #fbf5e8 100%);
+      border-radius: 28px;
+      padding: 45px 30px;
+      border: none !important;
+      box-shadow:
+      0 20px 40px -12px rgba(0, 0, 0, 0.08),
+      0 8px 16px -4px rgba(212, 175, 55, 0.12),
+      inset 0 2px 3px rgba(255, 255, 255, 0.9) !important;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      justify-content: space-between;
+      min-height: 520px;
+    }
+
+    .bb-text-content {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .bb-main-title {
+      font-family: 'Assistant', 'Didot', 'Bodoni MT', serif;
+      font-size: 4.2rem;
+      font-weight: 300;
+      color: #222222;
+      margin: 0 0 14px 0;
+      letter-spacing: -1px;
+      line-height: 1.1;
+    }
+
+    .gold-letter {
+      color: #d4af37;
+      font-weight: 400;
+      text-shadow: 0 2px 10px rgba(212, 175, 55, 0.25);
+    }
+
+    .bb-sub-text {
+      font-family: 'Assistant', sans-serif;
+      font-size: 1.1rem;
+      color: #555555;
+      margin: 0 0 24px 0;
+      max-width: 90%;
+    }
+
+    .bb-action-btn {
+      display: inline-block;
+      padding: 14px 42px;
+      background-color: #111111;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    }
+
+    .bb-action-btn:hover {
+      background-color: #d4af37;
+      color: #111111;
+      transform: translateY(-2px);
+    }
+
+    /* 3D Box & Animation */
+    .bb-box-stage {
+      margin-top: 35px;
+      perspective: 1000px;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .bb-gift-box {
+      width: 140px;
+      height: 110px;
+      position: relative;
+    }
+
+    .bb-box-body {
+      width: 100%;
+      height: 100%;
+      background: rgba(243, 226, 192, 0.55);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 12px;
+      border: 1.5px solid rgba(255, 255, 255, 0.8);
+      position: relative;
+      box-shadow: 0 15px 30px rgba(212, 175, 55, 0.18);
+    }
+
+    .bb-box-ribbon-v {
+      width: 20px;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.7);
+      margin: 0 auto;
+    }
+
+    .bb-box-ribbon-h {
+      width: 100%;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.7);
+      position: absolute;
+      top: 45px;
+    }
+
+    .bb-box-lid {
+      width: 152px;
+      height: 28px;
+      background: rgba(248, 233, 203, 0.85);
+      backdrop-filter: blur(8px);
+      border-radius: 8px;
+      position: absolute;
+      top: -22px;
+      left: -6px;
+      z-index: 4;
+      border: 1.5px solid rgba(255, 255, 255, 0.9);
+      transform-origin: left bottom;
+      animation: openCloseLid 5s infinite ease-in-out;
+    }
+
+    .bb-lid-bow {
+      position: absolute;
+      top: -18px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 22px;
+    }
+
+    .bb-pop-items {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .bb-item {
+      position: absolute;
+      font-size: 28px;
+      opacity: 0;
+      animation: floatOutAndBack 5s infinite ease-in-out;
+    }
+
+    .item-balloon { left: 10px; animation-delay: 0.1s; }
+    .item-popper  { left: 38px; animation-delay: 0.2s; }
+    .item-hat     { left: 65px; animation-delay: 0.3s; }
+    .item-sparkle { left: 92px; animation-delay: 0.25s; }
+    .item-candle  { left: 115px; animation-delay: 0.15s; }
+
+    @keyframes openCloseLid {
+      0%, 100% { transform: rotate(0deg) translateY(0); }
+      20%, 70% { transform: rotate(-75deg) translateY(-20px); }
+      85%      { transform: rotate(0deg) translateY(0); }
+    }
+
+    @keyframes floatOutAndBack {
+      0%, 100% { opacity: 0; transform: translateY(20px) scale(0.2); }
+      25% { opacity: 1; }
+      45%, 60% { opacity: 1; transform: translateY(-110px) scale(1.2); }
+      75% { opacity: 0.8; transform: translateY(-10px) scale(0.5); }
+    }
+
+    /* Right Side Styles */
+    .bb-hero-part2 {
+      position: relative;
+      height: 540px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .bb-sliders-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      border-radius: 20px;
+    }
+
+    .bb-slider-col {
+      height: 100%;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .bb-track {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .col-up .bb-track {
+      animation: scrollUpInfinite 22s linear infinite;
+    }
+
+    .col-down .bb-track {
+      animation: scrollDownInfinite 22s linear infinite;
+    }
+
+    .bb-card-item {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      background-color: #f1f1f1;
+      flex-shrink: 0;
+    }
+
+    .bb-placeholder-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 15px;
+      text-align: center;
+      color: #888;
+      border: 2px dashed #ccc;
+      font-size: 0.85rem;
+    }
+
+    .bb-card-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    @keyframes scrollUpInfinite {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-50%); }
+    }
+
+    @keyframes scrollDownInfinite {
+      0% { transform: translateY(-50%); }
+      100% { transform: translateY(0); }
+    }
+
+    /* Floating Circles */
+    .bb-water-drop {
+      position: absolute;
+      width: 90px;
+      height: 90px;
+      overflow: hidden;
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+      border: 3px solid #ffffff;
+      z-index: 2;
+      background: #fff;
+      animation: waterDropMorph 6s infinite ease-in-out, floatWater 4s infinite ease-in-out;
+    }
+
+    .bb-water-drop img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .bb-placeholder-circle {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #ffe082, #ffb74d);
+    }
+
+    .drop-top {
+      top: -15px;
+      left: -20px;
+    }
+
+    .drop-bottom {
+      bottom: -15px;
+      right: -15px;
+      animation-delay: 2s;
+    }
+
+    @keyframes waterDropMorph {
+      0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+      50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+    }
+
+    @keyframes floatWater {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(5deg); }
+    }
+
+    @media (max-width: 990px) {
+      .bb-hero-wrapper {
+        padding: 20px 12px;
+      }
+
+      .bb-hero-container {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+
+      .bb-gold-card {
+        padding: 30px 20px 25px 20px;
+        min-height: auto;
+        text-align: center !important;
+        align-items: center !important;
+      }
+
+      .bb-text-content {
+        align-items: center !important;
+        text-align: center !important;
+      }
+
+      .bb-main-title {
+        font-size: 2.5rem;
+        text-align: center !important;
+        margin-bottom: 10px;
+      }
+
+      .bb-sub-text {
+        font-size: 0.95rem;
+        text-align: center !important;
+        max-width: 100%;
+        margin-bottom: 20px;
+      }
+
+      .bb-action-btn {
+        padding: 12px 32px;
+        font-size: 0.9rem;
+      }
+
+      /* Mobile Box Size Adjustment & Scale Down */
+      .bb-box-stage {
+        margin-top: 25px;
+        transform: scale(0.75); /* Box size chota karne ke liye */
+        transform-origin: center center;
+      }
+
+      .bb-hero-part2 {
+        height: 380px; /* Mobile par slider ki height balance karne ke liye */
+      }
+
+      .drop-top {
+        width: 65px;
+        height: 65px;
+        top: -10px;
+        left: -10px;
+      }
+
+      .drop-bottom {
+        width: 65px;
+        height: 65px;
+        bottom: -10px;
+        right: -10px;
+      }
+    }
+</style>
+
+<!-- Improved Observer Script -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const topCircleImg = document.getElementById('bb-top-circle-img');
+    const topCirclePh = document.getElementById('bb-top-circle-ph');
+    const bottomCircleImg = document.getElementById('bb-bottom-circle-img');
+    const bottomCirclePh = document.getElementById('bb-bottom-circle-ph');
+
+    const leftCol = document.getElementById('bb-left-slider');
+    const rightCol = document.getElementById('bb-right-slider');
+
+    function setupCircleObserver(container, circleImg, circlePh) {
+      if (!container) return;
+      const cards = container.querySelectorAll('.bb-card-item:not(.bb-placeholder-item)');
+      if (!cards.length) return;
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const imgSrc = entry.target.getAttribute('data-src');
+              if (imgSrc && circleImg) {
+                circleImg.src = imgSrc;
+                circleImg.style.display = 'block';
+                if (circlePh) circlePh.style.display = 'none';
+              }
+            }
+          });
+        },
+        {
+          root: container,
+          threshold: 0.3,
+        }
+      );
+
+      cards.forEach((card) => observer.observe(card));
+    }
+
+    setupCircleObserver(leftCol, topCircleImg, topCirclePh);
+    setupCircleObserver(rightCol, bottomCircleImg, bottomCirclePh);
+  });
+</script>
+
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Birthday Box Custom Hero",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Main Title",
+      "default": "Birthday Box"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Get everything in one box no need to visit shops to shops"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Label",
+      "default": "Explore Box"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button Link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "left_slider_image",
+      "name": "Left Slider Image (Up)",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Left Column Image (800x800)"
+        }
+      ]
+    },
+    {
+      "type": "right_slider_image",
+      "name": "Right Slider Image (Down)",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Right Column Image (800x800)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Birthday Box Custom Hero",
+      "blocks": [
+        { "type": "left_slider_image" },
+        { "type": "left_slider_image" },
+        { "type": "right_slider_image" },
+        { "type": "right_slider_image" }
+      ]
+    }
+  ]
+}
+{% endschema %}

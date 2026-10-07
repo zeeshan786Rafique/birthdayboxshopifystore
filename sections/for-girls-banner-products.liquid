@@ -1,0 +1,381 @@
+{% comment %}
+  Section: For Girls - Banner, 5 Product Cards & Visit Button
+{% endcomment %}
+
+<div class="fg-section-wrapper page-width">
+  
+  {% comment %} 1. Banner Image {% endcomment %}
+  <div class="fg-banner-container">
+    {% if section.settings.banner_image != blank %}
+      <img 
+        src="{{ section.settings.banner_image | image_url: width: 1600 }}" 
+        alt="{{ section.settings.banner_image.alt | escape }}" 
+        loading="lazy" 
+        width="{{ section.settings.banner_image.width }}" 
+        height="{{ section.settings.banner_image.height }}"
+        class="fg-banner-img"
+      >
+    {% else %}
+      <div class="fg-banner-placeholder">
+        <span>Upload "For Girls" Banner Image in Theme Customizer</span>
+      </div>
+    {% endif %}
+  </div>
+
+  {% comment %} 2. 5 Product Cards Grid {% endcomment %}
+  <div class="fg-products-grid">
+    {% assign selected_collection_handle = section.settings.collection %}
+    {% assign selected_collection = collections[selected_collection_handle] %}
+
+    {% if selected_collection != blank and selected_collection.products_count > 0 %}
+      {% for product in selected_collection.products limit: 5 %}
+        <div class="fg-product-card">
+          <a href="{{ product.url }}" class="fg-card-link">
+            <div class="fg-image-wrapper">
+              {% if product.featured_media != blank %}
+                <img 
+                  src="{{ product.featured_media | image_url: width: 600 }}" 
+                  alt="{{ product.title | escape }}" 
+                  loading="lazy" 
+                  width="600" 
+                  height="600"
+                  class="fg-product-img"
+                >
+              {% else %}
+                {{ 'product-1' | placeholder_svg_tag: 'fg-product-img' }}
+              {% endif %}
+
+              {% if product.compare_at_price > product.price %}
+                <span class="fg-badge-sale">Sale</span>
+              {% endif %}
+            </div>
+          </a>
+
+          <div class="fg-card-info">
+            <a href="{{ product.url }}" class="fg-title-link">
+              <h3 class="fg-product-title">{{ product.title }}</h3>
+            </a>
+
+            <div class="fg-product-desc">
+              {% if product.description != blank %}
+                {{ product.description | strip_html | truncatewords: 8 }}
+              {% else %}
+                Complete decoration box kit for special events.
+              {% endif %}
+            </div>
+
+            <div class="fg-price-box">
+              {% if product.compare_at_price > product.price %}
+                <s class="fg-old-price">{{ product.compare_at_price | money }}</s>
+              {% endif %}
+              <span class="fg-current-price">{{ product.price | money }}</span>
+            </div>
+
+            {% comment %} Add To Cart Form {% endcomment %}
+            <form method="post" action="/cart/add" class="fg-atc-form">
+              <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+              <button 
+                type="submit" 
+                class="fg-atc-btn"
+                {% unless product.available %}disabled{% endunless %}
+              >
+                {% if product.available %}
+                  Add to Cart
+                {% else %}
+                  Sold Out
+                {% endif %}
+              </button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+
+    {% else %}
+      {% comment %} Fallback Placeholders {% endcomment %}
+      {% for i in (1..5) %}
+        <div class="fg-product-card">
+          <div class="fg-image-wrapper">
+            {{ 'product-1' | placeholder_svg_tag: 'fg-product-img' }}
+          </div>
+          <div class="fg-card-info">
+            <h3 class="fg-product-title">Sample Product {{ i }}</h3>
+            <div class="fg-product-desc">High quality birthday decoration set with balloons and banners.</div>
+            <div class="fg-price-box">
+              <span class="fg-current-price">Rs. 1,999.00</span>
+            </div>
+            <button type="button" class="fg-atc-btn">Add to Cart</button>
+          </div>
+        </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+
+  {% comment %} 3. Soft Pink Rounded Visit Button {% endcomment %}
+  <div class="fg-btn-wrapper">
+    <a 
+      href="{% if section.settings.button_url != blank %}{{ section.settings.button_url }}{% elsif selected_collection != blank %}{{ selected_collection.url }}{% else %}/collections/all{% endif %}" 
+      class="fg-visit-btn"
+    >
+      {{ section.settings.button_text | default: 'Visit For Girls' }}
+    </a>
+  </div>
+
+</div>
+
+<style>
+  .fg-section-wrapper {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .fg-banner-container {
+    width: 100%;
+    margin-bottom: 25px;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .fg-banner-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+  }
+
+  .fg-banner-placeholder {
+    width: 100%;
+    height: 120px;
+    background: #f4f4f4;
+    border: 2px dashed #ccc;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    font-weight: 600;
+  }
+
+  .fg-products-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+    width: 100%;
+  }
+
+  .fg-product-card {
+    background: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid #e8e8e8;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .fg-product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  }
+
+  .fg-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .fg-image-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background-color: #f9f9f9;
+    overflow: hidden;
+  }
+
+  .fg-product-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .fg-badge-sale {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    background-color: #e5a823;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 12px;
+  }
+
+  .fg-card-info {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    text-align: center;
+  }
+
+  .fg-title-link {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .fg-product-title {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0 0 6px 0;
+    color: #222;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .fg-product-desc {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 10px;
+    line-height: 1.4;
+    min-height: 34px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .fg-price-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    margin-bottom: 12px;
+    margin-top: auto;
+  }
+
+  .fg-old-price {
+    color: #888;
+    text-decoration: line-through;
+    font-size: 12px;
+  }
+
+  .fg-current-price {
+    font-weight: bold;
+    color: #000;
+  }
+
+  .fg-atc-form {
+    margin-top: auto;
+  }
+
+  .fg-atc-btn {
+    width: 100%;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    padding: 9px 0;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .fg-atc-btn:hover {
+    background-color: #333;
+  }
+
+  .fg-atc-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+
+  /* Visit Button Styles (Soft, Rounded & Light Theme) */
+  .fg-btn-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    width: 100%;
+  }
+
+  .fg-visit-btn {
+    display: inline-block;
+    padding: 12px 38px;
+    background-color: #fff5f8;
+    color: #c24d77;
+    border: 1.5px solid #f7b2ca;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(247, 178, 202, 0.15);
+  }
+
+  .fg-visit-btn:hover {
+    background-color: #f7b2ca;
+    color: #ffffff;
+    border-color: #f7b2ca;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(247, 178, 202, 0.35);
+  }
+
+  /* Responsive Layout for Mobile/Tablet */
+  @media (max-width: 990px) {
+    .fg-products-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .fg-products-grid {
+      grid-template-columns: repeat(1, 1fr);
+      gap: 10px;
+    }
+
+    .fg-visit-btn {
+      width: 80%;
+      padding: 11px 0;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "For Girls Section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "banner_image",
+      "label": "Section Banner Image"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Select Collection"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Visit For Girls"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Custom Button Link (Optional)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "For Girls Section"
+    }
+  ]
+}
+{% endschema %}
